@@ -1,0 +1,68 @@
+body {
+    font-family: sans-serif;
+    margin: 0px;
+}
+
+#alarm-page {
+
+}
+
+#alarm-list {
+    width: 800px;
+    margin: auto;
+}
+
+.alarm {
+    padding: 10px;
+    font-size: 18pt;
+    background-color: #ddd;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    position: relative;
+    text-align: center;
+}
+
+.alarm-close-button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 3px;
+    margin: 3px;
+    border-radius: 2px;
+    background-color: #bbb;
+    border: 1px solid #888;
+    font-size: 12pt;
+    width: 15px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+}
+
+.alarm-close-button:hover {
+    box-shadow: inset 1px 1px 2px #889;
+    padding-left: 4px;
+    padding-top: 4px;
+    padding-right: 2px;
+    padding-bottom: 2px;
+}
+
+#alarm-creator {
+    padding: 10px;
+    font-size: 18pt;
+    background-color: #ddd;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    position: relative;
+    text-align: center;
+}
+
+#clock {
+    padding: 10px;
+    background-color: #114466;
+    color: #fff;
+    font-size: 48pt;
+    text-align: center;
+}
