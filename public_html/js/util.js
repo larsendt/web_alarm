@@ -1,5 +1,12 @@
 function local_date_format(date) {
     var h = date.getHours();
+    var am = true;
+
+    if(h > 12) {
+        h -= 12;
+        am = false;
+    }
+
     if(h < 10) {
         h = "0" + h;
     }
@@ -14,7 +21,12 @@ function local_date_format(date) {
         s = "0" + s;
     }
 
-    return h + ":" + m + ":" + s;
+    var postfix = " PM";
+    if(am) {
+        postfix = " AM";
+    }
+
+    return h + ":" + m + ":" + s + postfix;
 }
 
 function fmt_diff(diff) {

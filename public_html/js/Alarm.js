@@ -17,6 +17,14 @@ var AlarmDeleteButton = React.createClass({
     }
 });
 
+var AlarmDescriptor = React.createClass({
+    render: function() {
+        return (
+            <div className="alarm-descriptor">Tuesday 09:00:00 AM</div>
+        )
+    },
+});
+
 var Alarm = React.createClass({
     deleteAlarm: function() {
         this.props.deleteAlarm(this.props.alarm_id);
@@ -26,6 +34,7 @@ var Alarm = React.createClass({
             <div className="alarm">
                 <AlarmCountdown trigger_time={this.props.trigger_time} 
                                 time={this.props.time} />
+                <AlarmDescriptor />
                 <AlarmDeleteButton onClick={this.deleteAlarm} />
             </div>
         );
