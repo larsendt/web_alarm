@@ -81,9 +81,14 @@ var AlarmList = React.createClass({
                     alarms.push(new_alarm)
                     this.setState({error_msg: null, alarms: alarms});
                 }
+
+                this.props.authSucceeded(true);
             }.bind(this),
             error: function(err) {
-                this.setState({error_msg: "Failed to fetch alarms (" + err.status + ")"})
+                this.setState({error_msg: "Failed to fetch alarms (" + err.status + ")"});
+                if(err.status == 403) {
+                    this.props.authSucceeded(false);
+                }
             }.bind(this),
         });
     },
