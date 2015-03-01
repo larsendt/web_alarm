@@ -73,3 +73,10 @@ body {
     font-size: 48pt;
     text-align: center;
 }
+
+.error {
+    font-size: 18pt;
+    color: #d00;
+    padding: 10px;
+    text-align: center;
+}

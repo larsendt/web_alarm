@@ -3,7 +3,8 @@
 var AlarmList = React.createClass({
     getInitialState: function() {
         return {
-            alarms: []
+            alarms: [],
+            error_msg: null,
         };
     },
     deleteAlarm: function(alarm_id) {
@@ -34,8 +35,35 @@ var AlarmList = React.createClass({
         });
         this.setState({alarms: alarms});
     },
+    componentWillMount: function() {
+        $.ajax({
+            url: "/api/alarms", 
+            dataType: "json",
+            cache: false,
+            success: function(data) {
+                if(!("alarms" in data)) {
+                    this.setState({error_msg: "Invalid json"});
+                    return;
+                }
+                for(var i in data["alarms"]) {
+                    var a = data["alarms"][i];
+                    this.createAlarm(a.day, a.hour, a.minute, a.second);
+                    this.setState({error_msg: null});
+                }
+            }.bind(this),
+            error: function(err) {
+                this.setState({error_msg: "Failed to fetch alarms (" + err.status + ")"})
+            }.bind(this),
+        });
+    },
     render: function() {
         var alarms = [];
+        var err_elem = <span></span>;
+
+        if(this.state.error_msg != null) {
+            err_elem = <div className="error">{this.state.error_msg}</div>;
+        }
+
         for(var i in this.state.alarms) {
             alarms.push(<Alarm key={i} 
                                alarm={this.state.alarms[i]}
@@ -45,6 +73,7 @@ var AlarmList = React.createClass({
 
         return (
             <div id="alarm-list">
+                {err_elem}
                 {alarms}
                 <AlarmCreator createAlarm={this.createAlarm} />
             </div>
