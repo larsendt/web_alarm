@@ -8,23 +8,33 @@ var AlarmList = React.createClass({
         };
     },
     deleteAlarm: function(alarm_id) {
-        console.log("delete alarm: " + alarm_id);
-        var alarms = this.state.alarms;
-        var idx = -1;
-        for(var i in alarms) {
-            if(alarms[i].id == alarm_id) {
-                idx = i;
-                break;
-            }
-        }
+        $.ajax({
+            url: "/api/alarms/delete",
+            type: "POST",
+            data: {alarm_id: alarm_id},
+            success: function(data) {
+                var alarms = this.state.alarms;
+                var idx = -1;
+                for(var i in alarms) {
+                    if(alarms[i].id == alarm_id) {
+                        idx = i;
+                        break;
+                    }
+                }
 
-        if(idx >= 0) {
-            alarms.splice(idx, 1);
-            this.setState({alarms: alarms});
-        }
-        else {
-            console.log("bad id");
-        }
+                if(idx >= 0) {
+                    alarms.splice(idx, 1);
+                    this.setState({alarms: alarms, error_msg: null});
+                }
+                else {
+                    console.log("bad id");
+                    this.setState({error_msg: "Client side error - this should never happen"});
+                }
+            }.bind(this),
+            error: function(err) {
+                this.setState({error_msg: "Failed to delete alarm (" + err.status + ")"});
+            }.bind(this),
+        });
     },
     createAlarm: function(day, hour, minute, second) {
         var id = Math.floor(Math.random() * 1e15);
