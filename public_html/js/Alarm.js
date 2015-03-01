@@ -27,7 +27,7 @@ var AlarmDescriptor = React.createClass({
 
 var Alarm = React.createClass({
     deleteAlarm: function() {
-        this.props.deleteAlarm(this.props.alarm_id);
+        this.props.deleteAlarm(this.props.alarm.id);
     },
     render: function() {
         return (

@@ -1,4 +1,4 @@
-function AlarmObject(day_of_week, hour, minute, second) {
+function AlarmObject(day_of_week, hour, minute, second, id) {
     var DAYS = 60 * 60 * 24;
     var HOURS = 60 * 60;
     var MINUTES = 60;
@@ -7,6 +7,7 @@ function AlarmObject(day_of_week, hour, minute, second) {
     this.hour = hour;
     this.minute = minute;
     this.second = second;
+    this.id = id;
 
     this.next_occurence = function() {
         var now = new Date();
