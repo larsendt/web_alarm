@@ -10,7 +10,6 @@ var AlarmCreator = React.createClass({
         };
     },
     submit: function(event) {
-        console.log(this.props);
         var day = Number($("#day-select").val());
         var hour = Number($("#hour-input").val());
         var minute = Number($("#minute-input").val());
@@ -39,8 +38,6 @@ var AlarmCreator = React.createClass({
             newstate.second_ok = false;
             ok = false;
         }
-
-        console.log("new alarm:", day, hour, minute, second, am);
 
         if(am == "am") {
             if(hour == 12) {
