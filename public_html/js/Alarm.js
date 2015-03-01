@@ -2,7 +2,7 @@
 
 var AlarmCountdown = React.createClass({
     render: function() {
-        var d = this.props.trigger_time.getTime() - this.props.time.getTime();
+        var d = this.props.trigger_time.unix() - this.props.time.unix();
         return (
             <div className="alarm-countdown">Trigger in {fmt_diff(d)}</div>
         );

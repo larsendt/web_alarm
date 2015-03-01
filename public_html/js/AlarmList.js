@@ -36,15 +36,24 @@ var AlarmList = React.createClass({
             }.bind(this),
         });
     },
-    createAlarm: function(day, hour, minute, second) {
+    createAlarm: function(day, hour, minute, second, tzoffset) {
         var id = Math.floor(Math.random() * 1e15);
         var alarms = this.state.alarms; 
-        var new_alarm = new AlarmObject(day, hour, minute, second, id);
+        var new_alarm = new AlarmObject(day, hour, minute, second, tzoffset, id);
+
+        var alarm_data = {
+            id: new_alarm.id,
+            day: new_alarm.day,
+            hour: new_alarm.hour,
+            minute: new_alarm.minute,
+            second: new_alarm.second,
+            tzoffset: new_alarm.tzoffset
+        };
 
         $.ajax({
             url: "/api/alarms/create",
             type: "POST",
-            data: new_alarm,
+            data: alarm_data,
             success: function(data) {
                 alarms.push(new_alarm);
                 this.setState({error_msg: null, alarms: alarms});
@@ -67,7 +76,7 @@ var AlarmList = React.createClass({
                 var alarms = this.state.alarms;
                 for(var i in data["alarms"]) {
                     var a = data["alarms"][i];
-                    var new_alarm = new AlarmObject(a.day, a.hour, a.minute, a.second, a.id);
+                    var new_alarm = new AlarmObject(a.day, a.hour, a.minute, a.second, a.tzoffset, a.id);
                     alarms.push(new_alarm)
                     this.setState({error_msg: null, alarms: alarms});
                 }

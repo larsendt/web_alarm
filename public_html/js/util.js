@@ -30,7 +30,6 @@ function local_date_format(date) {
 }
 
 function fmt_diff(diff) {
-    diff = diff / 1000;
     var neg = diff < 0;
     diff = Math.abs(diff);
 
@@ -81,4 +80,20 @@ function fmt_diff(diff) {
         return str;
     }
 }
+
+function parse_tzoffset(offset) {
+    if(offset.length != 5) {
+        return null;
+    }
+
+    var sign = offset[0];
+    if(sign != "-" && sign != "+") {
+        return null;
+    }
+    
+    var hours = offset.substring(1, 3);
+    console.log(hours);
+}
+
+
 

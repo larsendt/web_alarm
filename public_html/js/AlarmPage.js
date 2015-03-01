@@ -3,11 +3,11 @@
 var AlarmPage = React.createClass({
     getInitialState: function() {
         return {
-            time: new Date()
+            time: moment()
         };
     },
     updateTime: function() {
-        this.setState({time: new Date()});
+        this.setState({time: moment()});
     },
     componentWillMount: function() {
         this.updateTime();
