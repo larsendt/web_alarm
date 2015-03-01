@@ -5,9 +5,10 @@ from flup.server.fcgi import WSGIServer
 from functools import wraps
 import json
 import alarms
+import auth
 
 app = Flask(__name__)
-app.debug = False
+app.debug = False 
 
 def json_response(func):
     @wraps(func)
@@ -23,18 +24,18 @@ def json_response(func):
 def auth_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        mac = request.form.get("hmac-sha256")
-        if mac == None:
+        mac = request.headers.get("Authorization")
+        if not auth.check_auth(mac, request.form):
             return "unauthorized", 403
         else:
             return func(*args, **kwargs)
     return wrapper
 
-@app.route("/api", methods=["GET", "POST"])
+@app.route("/api")
 @json_response
 @auth_required
 def api_index():
-    return "ok", 404
+    return "ok", 200
 
 @app.route("/api/alarms")
 @json_response
