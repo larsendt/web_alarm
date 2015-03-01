@@ -19,13 +19,15 @@ body {
     background-color: #ddd;
     margin: 5px;
     border-radius: 5px;
-    border: 1px solid #aaa;
+    border: 1px solid #777;
     position: relative;
     text-align: center;
 }
 
 .active-alarm {
     color: #037;
+    background-color: #7cf;
+    border: 1px solid #146;
 }
 
 .alarm-close-button {
@@ -65,7 +67,7 @@ body {
     background-color: #ddd;
     margin: 5px;
     border-radius: 5px;
-    border: 1px solid #aaa;
+    border: 1px solid #777;
     position: relative;
     text-align: center;
 }

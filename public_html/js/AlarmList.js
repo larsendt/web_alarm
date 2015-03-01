@@ -36,10 +36,10 @@ var AlarmList = React.createClass({
             }.bind(this),
         });
     },
-    createAlarm: function(day, hour, minute, second, tzoffset) {
+    createAlarm: function(day, hour, minute, second) {
         var id = Math.floor(Math.random() * 1e15);
-        var alarms = this.state.alarms; 
-        var new_alarm = new AlarmObject(day, hour, minute, second, tzoffset, id);
+        var z_off = moment().utcOffset();
+        var new_alarm = make_alarm_object(day, hour, minute, second, id, -z_off)
 
         var alarm_data = {
             id: new_alarm.id,
@@ -47,7 +47,6 @@ var AlarmList = React.createClass({
             hour: new_alarm.hour,
             minute: new_alarm.minute,
             second: new_alarm.second,
-            tzoffset: new_alarm.tzoffset
         };
 
         $.ajax({
@@ -55,15 +54,14 @@ var AlarmList = React.createClass({
             type: "POST",
             data: alarm_data,
             success: function(data) {
-                alarms.push(new_alarm);
-                this.setState({error_msg: null, alarms: alarms});
+                this.fetchAlarms();
             }.bind(this),
             error: function(err) {
                 this.setState({error_msg: "Failed to create new alarm (" + err.status + ")"});
             }.bind(this)
         });
     },
-    componentWillMount: function() {
+    fetchAlarms: function() {
         $.ajax({
             url: "/api/alarms", 
             dataType: "json",
@@ -73,10 +71,13 @@ var AlarmList = React.createClass({
                     this.setState({error_msg: "Invalid json"});
                     return;
                 }
-                var alarms = this.state.alarms;
+
+                var z_off = moment().utcOffset();
+
+                var alarms = [];
                 for(var i in data["alarms"]) {
                     var a = data["alarms"][i];
-                    var new_alarm = new AlarmObject(a.day, a.hour, a.minute, a.second, a.tzoffset, a.id);
+                    var new_alarm = make_alarm_object(a.day, a.hour, a.minute, a.second, a.id, z_off);
                     alarms.push(new_alarm)
                     this.setState({error_msg: null, alarms: alarms});
                 }
@@ -85,6 +86,9 @@ var AlarmList = React.createClass({
                 this.setState({error_msg: "Failed to fetch alarms (" + err.status + ")"})
             }.bind(this),
         });
+    },
+    componentWillMount: function() {
+        this.fetchAlarms();
     },
     render: function() {
         var alarm_elems = [];

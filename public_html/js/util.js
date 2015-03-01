@@ -66,9 +66,9 @@ function fmt_diff(diff) {
         }
     }
     
-    if(seconds > 0) {
+    if(seconds >= 0) {
         str += " " + seconds + " second";
-        if(seconds > 1) {
+        if(seconds != 1) {
             str += "s";
         }
     }
@@ -81,19 +81,42 @@ function fmt_diff(diff) {
     }
 }
 
-function parse_tzoffset(offset) {
-    if(offset.length != 5) {
-        return null;
+function make_alarm_object(day, hour, minute, second, id, minutes_offset) {
+    var hdiff = Math.floor(minutes_offset / 60);
+    var mdiff = Math.floor(minutes_offset - (hdiff * 60));
+
+    minute -= mdiff;
+    hour -= hdiff;
+
+    if(minute < 0) {
+        minute += 60;
+        hour -= 1;
+    }
+    if(minute > 59) {
+        minute -= 60;
+        hour += 1;
     }
 
-    var sign = offset[0];
-    if(sign != "-" && sign != "+") {
-        return null;
+    if(hour < 0) {
+        hour += 24;
+        day -= 1;
     }
-    
-    var hours = offset.substring(1, 3);
-    console.log(hours);
+    else if(hour > 23) {
+        hour -= 24;
+        day += 1;
+    }
+
+    if(day < 0) {
+        day += 7;
+    }
+    else if(day > 6) {
+        day -= 7;
+    }
+
+    return new AlarmObject(day, hour, minute, second, id);
 }
+
+
 
 
 

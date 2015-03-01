@@ -15,7 +15,6 @@ var AlarmCreator = React.createClass({
         var hour = Number($("#hour-input").val());
         var minute = Number($("#minute-input").val());
         var second = Number($("#second-input").val());
-        var tzoffset = $("#tz-input").val();
         var am = $("#am-pm-select").val();
 
         var ok = true;
@@ -41,7 +40,7 @@ var AlarmCreator = React.createClass({
             ok = false;
         }
 
-        console.log("new alarm:", day, hour, minute, second, tzoffset, am);
+        console.log("new alarm:", day, hour, minute, second, am);
 
         if(am == "am") {
             if(hour == 12) {
@@ -55,7 +54,7 @@ var AlarmCreator = React.createClass({
         }
 
         if(ok) {
-            this.props.createAlarm(day, hour, minute, second, tzoffset); 
+            this.props.createAlarm(day, hour, minute, second); 
         }
         this.setState(newstate);
 
@@ -65,7 +64,6 @@ var AlarmCreator = React.createClass({
         var hour_style = {};
         var minute_style = {};
         var second_style = {};
-        var tz_style = {width: "75px", marginRight: "10px"};
 
         if(!this.state.hour_ok) {
             hour_style.border = "1px solid #f00";    
@@ -110,10 +108,6 @@ var AlarmCreator = React.createClass({
                         <option value="am">AM</option>
                         <option value="pm">PM</option>
                     </select>
-                    <input type="number"
-                           defaultValue={moment().format("ZZ")}
-                           id="tz-input"
-                           style={tz_style} />
                     <input type="submit" value="Add Alarm" />
                 </form>
             </div>

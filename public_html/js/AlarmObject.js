@@ -1,4 +1,4 @@
-function AlarmObject(day_of_week, hour, minute, second, tzoffset, id) {
+function AlarmObject(day_of_week, hour, minute, second, id) {
     var DAYS = 60 * 60 * 24;
     var HOURS = 60 * 60;
     var MINUTES = 60;
@@ -7,7 +7,6 @@ function AlarmObject(day_of_week, hour, minute, second, tzoffset, id) {
     this.hour = hour;
     this.minute = minute;
     this.second = second;
-    this.tzoffset = tzoffset;
     this.id = id;
     this.server_error = false;
 
@@ -46,7 +45,7 @@ function AlarmObject(day_of_week, hour, minute, second, tzoffset, id) {
         var day_names = ["Sunday", "Monday", "Tuesday", "Wednesday", 
             "Thursday", "Friday", "Saturday"];
         var no = this.next_occurence();
-        return day_names[no.weekday()] + no.format(" hh:mm:ss A ZZ");
+        return day_names[no.weekday()] + no.format(" hh:mm:ss A");
     }
 }
 

@@ -11,6 +11,13 @@ input[type=text] {
     text-align: center;
 }
 
+input[type=number] {
+    font-size: 18pt;
+    width: 50px;
+    max-width: 50px;
+    text-align: center;
+}
+
 input {
     font-size: 18pt;
     padding: 5px;
