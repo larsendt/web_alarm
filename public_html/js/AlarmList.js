@@ -30,9 +30,6 @@ var AlarmList = React.createClass({
         var id = Math.floor(Math.random() * 1e10);
         var alarms = this.state.alarms; 
         alarms.push(new AlarmObject(day, hour, minute, second, id));
-        alarms.sort(function(a, b) {
-            return a.next_occurence() - b.next_occurence();
-        });
         this.setState({alarms: alarms});
     },
     componentWillMount: function() {
@@ -57,16 +54,22 @@ var AlarmList = React.createClass({
         });
     },
     render: function() {
-        var alarms = [];
+        var alarm_elems = [];
         var err_elem = <span></span>;
 
         if(this.state.error_msg != null) {
             err_elem = <div className="error">{this.state.error_msg}</div>;
         }
 
-        for(var i in this.state.alarms) {
-            alarms.push(<Alarm key={i} 
-                               alarm={this.state.alarms[i]}
+        var alarms = this.state.alarms; 
+        alarms.sort(function(a, b) {
+            return a.next_occurence() - b.next_occurence();
+        });
+
+
+        for(var i in alarms) {
+            alarm_elems.push(<Alarm key={i} 
+                               alarm={alarms[i]}
                                time={this.props.time} 
                                deleteAlarm={this.deleteAlarm} />);
         }
@@ -74,7 +77,7 @@ var AlarmList = React.createClass({
         return (
             <div id="alarm-list">
                 {err_elem}
-                {alarms}
+                {alarm_elems}
                 <AlarmCreator createAlarm={this.createAlarm} />
             </div>
         );
