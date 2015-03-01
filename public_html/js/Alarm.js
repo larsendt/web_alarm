@@ -30,8 +30,12 @@ var Alarm = React.createClass({
         this.props.deleteAlarm(this.props.alarm.id);
     },
     render: function() {
+        var className = "alarm";
+        if(this.props.alarm.next_occurence() - this.props.time < (15 * 60 * 1000)) {
+            className += " active-alarm"; 
+        }
         return (
-            <div className="alarm">
+            <div className={className}>
                 <AlarmCountdown trigger_time={this.props.alarm.next_occurence()} 
                                 time={this.props.time} />
                 <AlarmDescriptor alarm_string={this.props.alarm.to_string()} />

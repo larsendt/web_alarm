@@ -24,6 +24,10 @@ body {
     text-align: center;
 }
 
+.active-alarm {
+    color: #037;
+}
+
 .alarm-close-button {
     position: absolute;
     right: 0px;
