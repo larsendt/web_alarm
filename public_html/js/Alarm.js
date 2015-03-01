@@ -34,12 +34,20 @@ var Alarm = React.createClass({
         if(this.props.alarm.next_occurence() - this.props.time < (15 * 60 * 1000)) {
             className += " active-alarm"; 
         }
+
+        var error_elem = <span></span>
+        if(this.props.alarm.server_error) {
+            className += " server-error";
+            error_elem = <div className="error">Failed to post this to server!</div>;
+        }
+
         return (
             <div className={className}>
                 <AlarmCountdown trigger_time={this.props.alarm.next_occurence()} 
                                 time={this.props.time} />
                 <AlarmDescriptor alarm_string={this.props.alarm.to_string()} />
                 <AlarmDeleteButton onClick={this.deleteAlarm} />
+                {error_elem}
             </div>
         );
     },

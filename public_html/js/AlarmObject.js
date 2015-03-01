@@ -8,6 +8,7 @@ function AlarmObject(day_of_week, hour, minute, second, id) {
     this.minute = minute;
     this.second = second;
     this.id = id;
+    this.server_error = false;
 
     this.next_occurence = function() {
         var now = new Date();

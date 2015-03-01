@@ -27,10 +27,22 @@ var AlarmList = React.createClass({
         }
     },
     createAlarm: function(day, hour, minute, second) {
-        var id = Math.floor(Math.random() * 1e10);
+        var id = Math.floor(Math.random() * 1e15);
         var alarms = this.state.alarms; 
-        alarms.push(new AlarmObject(day, hour, minute, second, id));
-        this.setState({alarms: alarms});
+        var new_alarm = new AlarmObject(day, hour, minute, second, id);
+
+        $.ajax({
+            url: "/api/alarms/create",
+            type: "POST",
+            data: new_alarm,
+            success: function(data) {
+                alarms.push(new_alarm);
+                this.setState({error_msg: null, alarms: alarms});
+            }.bind(this),
+            error: function(err) {
+                this.setState({error_msg: "Failed to create new alarm (" + err.status + ")"});
+            }.bind(this)
+        });
     },
     componentWillMount: function() {
         $.ajax({
@@ -42,10 +54,12 @@ var AlarmList = React.createClass({
                     this.setState({error_msg: "Invalid json"});
                     return;
                 }
+                var alarms = this.state.alarms;
                 for(var i in data["alarms"]) {
                     var a = data["alarms"][i];
-                    this.createAlarm(a.day, a.hour, a.minute, a.second);
-                    this.setState({error_msg: null});
+                    var new_alarm = new AlarmObject(a.day, a.hour, a.minute, a.second, a.id);
+                    alarms.push(new_alarm)
+                    this.setState({error_msg: null, alarms: alarms});
                 }
             }.bind(this),
             error: function(err) {
