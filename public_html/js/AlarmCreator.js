@@ -94,15 +94,15 @@ var AlarmCreator = React.createClass({
                         <option value="5">Friday</option>
                         <option value="6">Saturday</option>
                     </select>
-                    <input type="text" 
+                    <input type="number" 
                            defaultValue="12" 
                            id="hour-input" 
                            style={hour_style} />:
-                    <input type="text" 
+                    <input type="number" 
                            defaultValue="00" 
                            id="minute-input" 
                            style={minute_style} />:
-                    <input type="text" 
+                    <input type="number" 
                            defaultValue="00" 
                            id="second-input" 
                            style={second_style} />
@@ -110,7 +110,7 @@ var AlarmCreator = React.createClass({
                         <option value="am">AM</option>
                         <option value="pm">PM</option>
                     </select>
-                    <input type="text"
+                    <input type="number"
                            defaultValue={moment().format("ZZ")}
                            id="tz-input"
                            style={tz_style} />
