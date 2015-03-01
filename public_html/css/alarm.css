@@ -4,10 +4,11 @@ body {
 }
 
 #alarm-page {
-
+    max-width: 100%;
 }
 
 #alarm-list {
+    max-width: 100%;
     width: 800px;
     margin: auto;
 }

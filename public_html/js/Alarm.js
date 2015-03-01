@@ -20,7 +20,7 @@ var AlarmDeleteButton = React.createClass({
 var AlarmDescriptor = React.createClass({
     render: function() {
         return (
-            <div className="alarm-descriptor">Tuesday 09:00:00 AM</div>
+            <div className="alarm-descriptor">{this.props.alarm_string}</div>
         )
     },
 });
@@ -32,9 +32,9 @@ var Alarm = React.createClass({
     render: function() {
         return (
             <div className="alarm">
-                <AlarmCountdown trigger_time={this.props.trigger_time} 
+                <AlarmCountdown trigger_time={this.props.alarm.next_occurence()} 
                                 time={this.props.time} />
-                <AlarmDescriptor />
+                <AlarmDescriptor alarm_string={this.props.alarm.to_string()} />
                 <AlarmDeleteButton onClick={this.deleteAlarm} />
             </div>
         );

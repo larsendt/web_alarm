@@ -1,18 +1,12 @@
 /** @jsx React.DOM */
 
-function alarm_time() {
-    var now = new Date().getTime();
-    var t = now + (Math.random() * 24 * 60 * 60 * 1000);
-    return new Date(t);
-}
-
 var AlarmList = React.createClass({
     getInitialState: function() {
         return {
             alarm_times: {
-                1:alarm_time(), 
-                2:alarm_time(), 
-                3:alarm_time()
+                1:new AlarmObject(0, 0, 0, 0), 
+                2:new AlarmObject(1, 0, 0, 0), 
+                3:new AlarmObject(2, 0, 0, 0)
             }
         };
     },
@@ -27,7 +21,7 @@ var AlarmList = React.createClass({
         for(var i in this.state.alarm_times) {
             alarms.push(<Alarm key={i} 
                                alarm_id={i}
-                               trigger_time={this.state.alarm_times[i]}
+                               alarm={this.state.alarm_times[i]}
                                time={this.props.time} 
                                deleteAlarm={this.deleteAlarm} />);
         }
