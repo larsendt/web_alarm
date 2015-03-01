@@ -8,10 +8,15 @@ var AlarmList = React.createClass({
         };
     },
     deleteAlarm: function(alarm_id) {
+        var post_data = {alarm_id: alarm_id};
+
         $.ajax({
             url: "/api/alarms/delete",
+            headers: {
+                "Authorization": make_hmac(this.props.password, post_data),
+            }, 
             type: "POST",
-            data: {alarm_id: alarm_id},
+            data: post_data,
             success: function(data) {
                 var alarms = this.state.alarms;
                 var idx = -1;
@@ -27,7 +32,6 @@ var AlarmList = React.createClass({
                     this.setState({alarms: alarms, error_msg: null});
                 }
                 else {
-                    console.log("bad id");
                     this.setState({error_msg: "Client side error - this should never happen"});
                 }
             }.bind(this),
@@ -51,6 +55,9 @@ var AlarmList = React.createClass({
 
         $.ajax({
             url: "/api/alarms/create",
+            headers: {
+                "Authorization": make_hmac(this.props.password, alarm_data),
+            }, 
             type: "POST",
             data: alarm_data,
             success: function(data) {
@@ -66,6 +73,9 @@ var AlarmList = React.createClass({
             url: "/api/alarms", 
             dataType: "json",
             cache: false,
+            headers: {
+                "Authorization": make_hmac(this.props.password, {}),
+            }, 
             success: function(data) {
                 if(!("alarms" in data)) {
                     this.setState({error_msg: "Invalid json"});
@@ -81,8 +91,6 @@ var AlarmList = React.createClass({
                     alarms.push(new_alarm)
                     this.setState({error_msg: null, alarms: alarms});
                 }
-
-                this.props.authSucceeded(true);
             }.bind(this),
             error: function(err) {
                 this.setState({error_msg: "Failed to fetch alarms (" + err.status + ")"});

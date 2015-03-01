@@ -5,14 +5,30 @@ var AlarmPage = React.createClass({
         return {
             time: moment(),
             password: null,
-            auth_ok: "pending",
+            auth_error: null,
+            auth_ok: false,
         };
     },
     setPassword: function(password) {
         this.setState({password: password});
-    },
-    authSucceeded: function(ok) {
-        this.setState({auth_ok: ok});
+
+        $.ajax({
+            url: "/api",
+            headers: {
+                "Authorization": make_hmac(password, {}),
+            },
+            success: function(data) {
+                this.setState({auth_error: null, auth_ok: true});
+            }.bind(this),
+            error: function(err) {
+                if(err.status == 403) {
+                    this.setState({auth_error: "Authentication failed", auth_ok: false});
+                }
+                else {
+                    this.setState({auth_error: "Unknown error (" + err.status + ")", auth_ok: false});
+                }
+            }.bind(this),
+        });
     },
     updateTime: function() {
         this.setState({time: moment()});
@@ -23,20 +39,19 @@ var AlarmPage = React.createClass({
     },
     render: function() {
         var auth_elem = <span></span>;
-        if(this.state.auth_ok !== true) {
+        if(!this.state.auth_ok) {
             auth_elem = <AuthForm setPassword={this.setPassword} />;
         }
 
         var alarm_list_elem = <span></span>;
-        if(this.state.password != null) {
+        if(this.state.auth_ok) {
             alarm_list_elem = <AlarmList time={this.state.time}
-                                         password={this.state.password} 
-                                         authSucceeded={this.authSucceeded} />;
+                                         password={this.state.password} />
         }
 
         var error_elem = <span></span>
-        if(!this.state.auth_ok && this.state.password != null) {
-            error_elem = <div className="error">Authentication failed</div>; 
+        if(this.state.auth_error != null) {
+            error_elem = <div className="error">{this.state.auth_error}</div>; 
         }
 
         return (

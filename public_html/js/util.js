@@ -116,7 +116,20 @@ function make_alarm_object(day, hour, minute, second, id, minutes_offset) {
     return new AlarmObject(day, hour, minute, second, id);
 }
 
-
+function make_hmac(password, data) {
+    var datastr = "";
+    var keys = Object.keys(data);
+    keys.sort();
+    for(var i in keys) {
+        var key = keys[i];
+        datastr += key + "=" + data[key] + ",";
+    }
+    
+    // timestamp with 3 second window to prevent replay attacks
+    var t = moment().unix();
+    datastr += "hmac-timestamp=" + (t - (t % 3));
+    return "hmac-sha256=" + CryptoJS.HmacSHA256(datastr, password);
+}
 
 
 

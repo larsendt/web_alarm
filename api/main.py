@@ -20,19 +20,32 @@ def json_response(func):
         return resp
     return wrapper
 
-@app.route("/api")
+def auth_required(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        mac = request.form.get("hmac-sha256")
+        if mac == None:
+            return "unauthorized", 403
+        else:
+            return func(*args, **kwargs)
+    return wrapper
+
+@app.route("/api", methods=["GET", "POST"])
 @json_response
+@auth_required
 def api_index():
-    return "no", 404
+    return "ok", 404
 
 @app.route("/api/alarms")
 @json_response
+@auth_required
 def get_alarms():
     a = alarms.all_alarms()
     return {"alarms":a}, 200
 
 @app.route("/api/alarms/create", methods=["POST"])
 @json_response
+@auth_required
 def create_alarm():
     day = request.form.get("day")
     hour = request.form.get("hour")
@@ -50,6 +63,7 @@ def create_alarm():
 
 @app.route("/api/alarms/delete", methods=["POST"])
 @json_response
+@auth_required
 def delete_alarm():
     id = request.form.get("alarm_id")
     ok = alarms.delete(id)
