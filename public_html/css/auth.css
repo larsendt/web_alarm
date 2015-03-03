@@ -1,0 +1,11 @@
+#auth-wrapper {
+    width: 800px;
+    max-width: 100%;
+    margin: auto;
+    padding: 25px;
+    text-align: center;
+}
+
+#password-field {
+    margin-right: 10px;
+}
